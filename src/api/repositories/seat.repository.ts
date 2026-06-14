@@ -1,4 +1,4 @@
-import Transaction from "sequelize/lib/transaction";
+import { Transaction } from "sequelize";
 import { Seat } from "../models/seat.model";
 
 export class SeatRepository {
@@ -10,6 +10,7 @@ export class SeatRepository {
     return Seat.findOne({
       where: { seatNumber },
       transaction,
+      lock: transaction ? Transaction.LOCK.UPDATE : undefined,
     });
   }
 
