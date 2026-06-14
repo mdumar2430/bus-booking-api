@@ -13,6 +13,30 @@
     {
       "key": "bearerToken",
       "value": ""
+    },
+    {
+      "key": "seatNumber",
+      "value": "1"
+    },
+    {
+      "key": "seatStatus",
+      "value": "OPEN"
+    },
+    {
+      "key": "loginEmail",
+      "value": "admin@test.com"
+    },
+    {
+      "key": "loginPassword",
+      "value": "password123"
+    },
+    {
+      "key": "passengerName",
+      "value": "Test User"
+    },
+    {
+      "key": "passengerEmail",
+      "value": "test@example.com"
     }
   ],
   "item": [
@@ -27,12 +51,15 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (pm.response.code === 200) {",
+                  "pm.test('stores bearer token from login response', function () {",
+                  "  pm.response.to.have.status(200);",
                   "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('token');",
                   "  if (data.token) {",
                   "    pm.collectionVariables.set('bearerToken', data.token);",
+                  "    pm.environment.set('bearerToken', data.token);",
                   "  }",
-                  "}"
+                  "});"
                 ]
               }
             }
@@ -59,7 +86,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{loginPassword}}\"\n}"
             }
           },
           "response": []
@@ -112,7 +139,13 @@
             "url": {
               "raw": "{{baseUrl}}/api/v1/seats/1",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "seats", "1"]
+              "path": ["api", "v1", "seats", ":seatNumber"],
+              "variable": [
+                {
+                  "key": "seatNumber",
+                  "value": "{{seatNumber}}"
+                }
+              ]
             }
           },
           "response": []
@@ -123,9 +156,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/seats/status/OPEN",
+              "raw": "{{baseUrl}}/api/v1/seats/status/:status",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "seats", "status", "OPEN"]
+              "path": ["api", "v1", "seats", "status", ":status"],
+              "variable": [
+                {
+                  "key": "status",
+                  "value": "{{seatStatus}}"
+                }
+              ]
             }
           },
           "response": []
@@ -151,13 +190,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/seats/seat/1/book",
+              "raw": "{{baseUrl}}/api/v1/seats/seat/:seatNumber/book",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "seats", "seat", "1", "book"]
+              "path": ["api", "v1", "seats", "seat", ":seatNumber", "book"],
+              "variable": [
+                {
+                  "key": "seatNumber",
+                  "value": "{{seatNumber}}"
+                }
+              ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"passengerName\": \"Test User\",\n  \"passengerEmail\": \"test@example.com\"\n}"
+              "raw": "{\n  \"passengerName\": \"{{passengerName}}\",\n  \"passengerEmail\": \"{{passengerEmail}}\"\n}"
             }
           },
           "response": []
@@ -183,9 +228,15 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/seats/seat/1/release",
+              "raw": "{{baseUrl}}/api/v1/seats/seat/:seatNumber/release",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "seats", "seat", "1", "release"]
+              "path": ["api", "v1", "seats", "seat", ":seatNumber", "release"],
+              "variable": [
+                {
+                  "key": "seatNumber",
+                  "value": "{{seatNumber}}"
+                }
+              ]
             },
             "body": {
               "mode": "raw",
@@ -200,9 +251,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/seats/seat/1/owner",
+              "raw": "{{baseUrl}}/api/v1/seats/seat/:seatNumber/owner",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "seats", "seat", "1", "owner"]
+              "path": ["api", "v1", "seats", "seat", ":seatNumber", "owner"],
+              "variable": [
+                {
+                  "key": "seatNumber",
+                  "value": "{{seatNumber}}"
+                }
+              ]
             }
           },
           "response": []
