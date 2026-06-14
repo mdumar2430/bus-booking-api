@@ -1,7 +1,7 @@
 import { sequelize } from "../config/database";
 import { env } from "../config/env";
 import { Client } from "pg";
-import { seedAdmin } from "./seed-users";
+import { seedUsers } from "./seed-users";
 import { seedSeats } from "./seed-seats";
 import { setupAssociations } from "../api/models";
 export async function ensureDatabaseExists() {
@@ -36,8 +36,9 @@ export class DatabaseInitializer {
     await ensureDatabaseExists();
     await sequelize.authenticate();
     await setupAssociations();
-    await sequelize.sync();
-    await seedAdmin();
+    await sequelize.sync({ alter: true });
+    console.log(`Tables synced.`);
+    await seedUsers();
     await seedSeats();
   }
 }

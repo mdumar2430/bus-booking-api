@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { User } from "../api/models/user.model";
 import { env } from "../config/env";
 
-export async function seedAdmin() {
+export async function seedUsers() {
   const admin = await User.findOne({
     where: {
       email: "admin@test.com",
