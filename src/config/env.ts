@@ -15,4 +15,5 @@ export const env = {
   JWT_SECRET: process.env.JWT_SECRET!,
 
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "password123",
+  USER_PASSWORD: process.env.USER_PASSWORD || "password",
 };

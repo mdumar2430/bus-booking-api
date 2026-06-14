@@ -1,5 +1,9 @@
+import { sequelize } from "../config/database";
 import { env } from "../config/env";
 import { Client } from "pg";
+import { seedAdmin } from "./seed-users";
+import { seedSeats } from "./seed-seats";
+import { setupAssociations } from "../api/models";
 export async function ensureDatabaseExists() {
   const client = new Client({
     host: env.DB_HOST,
@@ -24,5 +28,16 @@ export async function ensureDatabaseExists() {
     }
   } finally {
     await client.end();
+  }
+}
+
+export class DatabaseInitializer {
+  static async initialize() {
+    await ensureDatabaseExists();
+    await sequelize.authenticate();
+    await setupAssociations();
+    await sequelize.sync();
+    await seedAdmin();
+    await seedSeats();
   }
 }

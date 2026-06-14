@@ -1,18 +1,10 @@
-import { sequelize } from "../config/database";
-import { ensureDatabaseExists } from "./database-setup";
-import { seedData } from "./seed-data";
-import { syncModels } from "./sync-models";
+import { DatabaseInitializer } from "./database-setup";
 
 export async function startup() {
   try {
-    await ensureDatabaseExists();
-    await sequelize.authenticate();
-    console.log("Database connection established");
-    await syncModels();
-    await seedData();
+    await DatabaseInitializer.initialize();
   } catch (error) {
     console.error(error);
-
     process.exit(1);
   }
 }

@@ -1,4 +1,4 @@
-import { Seat } from "../models/seat";
+import { Seat } from "../api/models/seat.model";
 
 export async function seedSeats() {
   const count = await Seat.count();
