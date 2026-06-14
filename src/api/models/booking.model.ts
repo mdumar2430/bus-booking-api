@@ -2,11 +2,11 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../../config/database";
 
 export class Booking extends Model {
-  public id!: string;
-  public seatId!: string;
-  public passengerName!: string;
-  public passengerEmail!: string;
-  public bookedAt!: Date;
+  declare id: string;
+  declare seatId: string;
+  declare passengerName: string;
+  declare passengerEmail: string;
+  declare bookedAt: Date;
 }
 
 Booking.init(
