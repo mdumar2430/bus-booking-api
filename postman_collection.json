@@ -1,0 +1,241 @@
+{
+  "info": {
+    "name": "Bus Booking API",
+    "_postman_id": "d2b7f6c8-8f6a-4f2a-9d21-4cfb9a5bc001",
+    "description": "Postman collection for the Bus Booking API with token persistence for protected routes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "bearerToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.token) {",
+                  "    pm.collectionVariables.set('bearerToken', data.token);",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Seats",
+      "item": [
+        {
+          "name": "Get All Seats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Seat By Number",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Seats By Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats/status/OPEN",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats", "status", "OPEN"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Book Seat",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{bearerToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats/seat/1/book",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats", "seat", "1", "book"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passengerName\": \"Test User\",\n  \"passengerEmail\": \"test@example.com\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Release Seat",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{bearerToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats/seat/1/release",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats", "seat", "1", "release"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Seat Owner",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/seats/seat/1/owner",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "seats", "seat", "1", "owner"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Reset All Seats",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{bearerToken}}",
+                "type": "string"
+              }
+            ]
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/seats/reset",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "seats", "reset"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
