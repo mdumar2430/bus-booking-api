@@ -1,0 +1,15 @@
+import { Transaction } from "sequelize";
+import { Booking } from "../models/booking.model";
+
+export class BookingRepository {
+  async create(payload: Partial<Booking>, transaction?: Transaction) {
+    return Booking.create(payload, { transaction });
+  }
+
+  async deleteBySeatId(seatId: string, transaction?: Transaction) {
+    return Booking.destroy({
+      where: { seatId },
+      transaction,
+    });
+  }
+}

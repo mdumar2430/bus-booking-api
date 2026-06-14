@@ -1,7 +1,13 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../../config/database";
 
-export class Booking extends Model {}
+export class Booking extends Model {
+  public id!: string;
+  public seatId!: string;
+  public passengerName!: string;
+  public passengerEmail!: string;
+  public bookedAt!: Date;
+}
 
 Booking.init(
   {
@@ -22,11 +28,6 @@ Booking.init(
     },
 
     passengerEmail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    passengerPhone: {
       type: DataTypes.STRING,
       allowNull: false,
     },

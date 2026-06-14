@@ -1,3 +1,4 @@
+import Transaction from "sequelize/lib/transaction";
 import { Seat } from "../models/seat.model";
 
 export class SeatRepository {
@@ -5,9 +6,10 @@ export class SeatRepository {
     return Seat.findAll();
   }
 
-  async findBySeatNumber(seatNumber: number) {
+  async findBySeatNumber(seatNumber: number, transaction?: Transaction) {
     return Seat.findOne({
       where: { seatNumber },
+      transaction,
     });
   }
 
@@ -15,5 +17,19 @@ export class SeatRepository {
     return Seat.findAll({
       where: { status },
     });
+  }
+
+  async updateStatus(
+    seatId: string,
+    status: "OPEN" | "CLOSED",
+    transaction?: Transaction,
+  ) {
+    return Seat.update(
+      { status },
+      {
+        where: { id: seatId },
+        transaction,
+      },
+    );
   }
 }

@@ -31,4 +31,29 @@ export class SeatController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+
+  bookSeat = async (req: any, res: any) => {
+    const seatNumber = parseInt(req.params.seatNumber, 10);
+    const { passengerName, passengerEmail } = req.body;
+    try {
+      const result = await this.seatService.bookSeat(
+        seatNumber,
+        passengerName,
+        passengerEmail,
+      );
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
+  releaseSeat = async (req: any, res: any) => {
+    const seatNumber = parseInt(req.params.seatNumber, 10);
+    try {
+      const result = this.seatService.releaseSeat(seatNumber);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
 }
