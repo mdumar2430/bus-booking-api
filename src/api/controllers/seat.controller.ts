@@ -3,6 +3,23 @@ import { SeatService } from "../services/seat.service";
 export class SeatController {
   constructor(private readonly seatService = new SeatService()) {}
 
+  private handleSeatError(error: unknown, res: any) {
+    if (error instanceof Error) {
+      if (error.message === "Seat not found") {
+        return res.status(404).json({ error: error.message });
+      }
+
+      if (
+        error.message === "Seat already booked" ||
+        error.message === "Seat already open"
+      ) {
+        return res.status(409).json({ error: error.message });
+      }
+    }
+
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+
   getAllSeats = async (req: any, res: any) => {
     try {
       const seats = await this.seatService.getAllSeats();
@@ -18,7 +35,7 @@ export class SeatController {
       const seat = await this.seatService.getSeatByNumber(seatNumber);
       res.json(seat);
     } catch (error) {
-      res.status(404).json({ error: "Seat not found" });
+      this.handleSeatError(error, res);
     }
   };
 
@@ -43,7 +60,7 @@ export class SeatController {
       );
       res.json(result);
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      this.handleSeatError(error, res);
     }
   };
 
@@ -53,7 +70,7 @@ export class SeatController {
       const result = await this.seatService.releaseSeat(seatNumber);
       res.json(result);
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      this.handleSeatError(error, res);
     }
   };
 
@@ -63,7 +80,7 @@ export class SeatController {
       const result = await this.seatService.getOwnerBySeatNumber(seatNumber);
       res.json(result);
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      this.handleSeatError(error, res);
     }
   };
 }

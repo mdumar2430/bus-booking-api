@@ -19,10 +19,7 @@ export class AuthController {
         });
       }
 
-      const passwordMatches = await bcrypt.compare(
-        password,
-        user.passwordHash,
-      );
+      const passwordMatches = await bcrypt.compare(password, user.passwordHash);
 
       if (!passwordMatches) {
         return res.status(401).json({
@@ -47,11 +44,6 @@ export class AuthController {
         success: true,
         message: "Login successful",
         token,
-        user: {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-        },
       });
     } catch (error) {
       return res.status(500).json({
