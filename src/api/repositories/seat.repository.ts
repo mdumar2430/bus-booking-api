@@ -32,4 +32,14 @@ export class SeatRepository {
       },
     );
   }
+
+  async resetAllSeats(transaction?: Transaction) {
+    return Seat.update(
+      { status: "OPEN" },
+      {
+        where: {},
+        transaction,
+      },
+    );
+  }
 }

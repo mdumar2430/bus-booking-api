@@ -21,4 +21,11 @@ export class BookingRepository {
       },
     });
   }
+
+  async deleteAll(transaction?: Transaction) {
+    return Booking.destroy({
+      where: {},
+      transaction,
+    });
+  }
 }

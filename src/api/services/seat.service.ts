@@ -110,4 +110,28 @@ export class SeatService {
       throw error;
     }
   }
+
+  async resetAllSeats() {
+    const transaction = await sequelize.transaction();
+
+    try {
+      const [seatsUpdated] = await this.seatRepository.resetAllSeats(
+        transaction,
+      );
+      const bookingsDeleted = await this.bookingRepository.deleteAll(
+        transaction,
+      );
+
+      await transaction.commit();
+
+      return {
+        message: "All seats reset successfully",
+        seatsUpdated,
+        bookingsDeleted,
+      };
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
 }

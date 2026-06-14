@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { SeatController } from "../controllers/seat.controller";
+import { authenticateToken } from "../../middlewares/auth.middleware";
+import { authorizeRoles } from "../../middlewares/authorize.middleware";
 import { validate } from "../../middlewares/validation.middleware";
 import {
   bookSeatSchema,
@@ -23,12 +25,14 @@ router.get(
 
 router.post(
   "/seat/:seatNumber/book",
+  authenticateToken,
   validate(bookSeatSchema),
   controller.bookSeat,
 );
 
 router.post(
   "/seat/:seatNumber/release",
+  authenticateToken,
   validate(getSeatSchema),
   controller.releaseSeat,
 );
