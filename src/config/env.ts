@@ -13,4 +13,6 @@ export const env = {
   DB_PASSWORD: process.env.DB_PASSWORD!,
 
   JWT_SECRET: process.env.JWT_SECRET!,
+
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "password123",
 };
