@@ -26,6 +26,18 @@ export class SeatService {
     return await this.seatRepository.findByStatus(seatStatus);
   }
 
+  async getOwnerBySeatNumber(seatNumber: number) {
+    const seat = await this.seatRepository.findBySeatNumber(seatNumber);
+    if (!seat) {
+      throw new Error("Seat not found");
+    }
+
+    const result = await this.bookingRepository.getPassengerDetailsBySeatId(
+      seat.id!,
+    );
+    return result;
+  }
+
   async bookSeat(
     seatNumber: number,
     passengerName: string,
@@ -56,7 +68,7 @@ export class SeatService {
         transaction,
       );
 
-      await this.seatRepository.updateStatus(seat.id, "CLOSED", transaction);
+      await this.seatRepository.updateStatus(seat.id!, "CLOSED", transaction);
 
       await transaction.commit();
 
@@ -85,8 +97,8 @@ export class SeatService {
         throw new Error("Seat already open");
       }
 
-      await this.seatRepository.updateStatus(seat.id, "OPEN", transaction);
-      await this.bookingRepository.deleteBySeatId(seat.id, transaction);
+      await this.seatRepository.updateStatus(seat.id!, "OPEN", transaction);
+      await this.bookingRepository.deleteBySeatId(seat.id!, transaction);
 
       await transaction.commit();
 

@@ -26,11 +26,3 @@ export const bookSeatSchema = Joi.object({
   }),
   query: Joi.object().optional(),
 });
-
-export const releaseSeatSchema = Joi.object({
-  params: Joi.object({
-    seatNumber: Joi.number().integer().min(1).max(40).required(),
-  }),
-  body: Joi.object().optional(),
-  query: Joi.object().optional(),
-});

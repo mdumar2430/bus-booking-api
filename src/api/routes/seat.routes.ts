@@ -5,7 +5,6 @@ import {
   bookSeatSchema,
   getSeatSchema,
   getSeatsByStatusSchema,
-  releaseSeatSchema,
 } from "../validators/seat.validator";
 
 const router = Router();
@@ -25,13 +24,19 @@ router.get(
 router.post(
   "/seat/:seatNumber/book",
   validate(bookSeatSchema),
-  (req, res) => {},
+  controller.bookSeat,
 );
 
 router.post(
   "/seat/:seatNumber/release",
-  validate(releaseSeatSchema),
-  (req, res) => {},
+  validate(getSeatSchema),
+  controller.releaseSeat,
+);
+
+router.get(
+  "/seat/:seatNumber/owner",
+  validate(getSeatSchema),
+  controller.getOwnerBySeatNumber,
 );
 
 export default router;
