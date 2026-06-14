@@ -50,7 +50,7 @@ export class SeatController {
   releaseSeat = async (req: any, res: any) => {
     const seatNumber = parseInt(req.params.seatNumber, 10);
     try {
-      const result = this.seatService.releaseSeat(seatNumber);
+      const result = await this.seatService.releaseSeat(seatNumber);
       res.json(result);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
@@ -60,7 +60,7 @@ export class SeatController {
   getOwnerBySeatNumber = async (req: any, res: any) => {
     const seatNumber = parseInt(req.params.seatNumber, 10);
     try {
-      const result = this.seatService.getOwnerBySeatNumber(seatNumber);
+      const result = await this.seatService.getOwnerBySeatNumber(seatNumber);
       res.json(result);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
